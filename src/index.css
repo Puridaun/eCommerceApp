@@ -3,13 +3,28 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+
+
 .App {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 300px;
     margin: 20px auto;
+
 }
+
+
+
+/* 
+Breakpoints:
+640px
+768px
+1024px
+1280px
+1536px
+*/
 
 input {
     padding: 10px;
@@ -124,10 +139,11 @@ input {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
 }

@@ -19,7 +19,7 @@ export const SignInForm: React.FC<{
   const {
     register,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<SignInValidationType>({
     resolver: zodResolver(SignInValidation),
   });
@@ -48,8 +48,8 @@ export const SignInForm: React.FC<{
       {errors.password && (
         <p className="text-red-500 text-sm">{errors.password.message}</p>
       )}
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "...Loading" : "SignIn"}
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "...Loading" : "SignIn"}
       </Button>
       <p className="text-center text-sm text-gray-600">
         Nu ai cont?{" "}
