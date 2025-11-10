@@ -1,14 +1,14 @@
+import { IconArrowLeft, IconHeart } from "@tabler/icons-react";
 import React from "react";
+import { Button } from "../ui/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Button } from "../ui/button";
 
 export const OpenedItemCard: React.FC<{
   price: number;
@@ -16,25 +16,51 @@ export const OpenedItemCard: React.FC<{
   imgUrl: string;
 }> = ({ price, title, imgUrl }) => {
   return (
-    <Card className="relative max-w-[360px]  h-[540px] p-0 overflow-hidden">
-      <CardHeader>
-        <div className="flex justify-between w-full p-3">
-          <Button>+</Button>
-          <Button>+</Button>
+    <Card className="relative max-w-[360px]  h-[540px] p-4 overflow-hidden">
+      <CardHeader
+        className={`container p-0 w-full h-[75%] bg-cover bg-center`}
+        style={{ backgroundImage: `url(/itemsImages/${imgUrl})` }}
+      >
+        <div className="flex justify-between w-full">
+          <Button variant="outline" className="rounded-full bg-neutral-300 p-5">
+            <IconArrowLeft stroke={2} />
+          </Button>
+          <Button
+            variant="outline"
+            className="relative rounded-full bg-neutral-300 p-5 "
+          >
+            <IconHeart stroke={2} />
+            <div className="rounded-full bg-red-500 py-0.5 px-1.5  text-[8px] absolute right-[-4px] top-[-4px] text-neutral-100">
+              1
+            </div>
+          </Button>
         </div>
       </CardHeader>
-      <CardContent
-        className={`container p-0 w-full h-[75%] bg-[url('/itemsImages/${imgUrl}')] bg-cover bg-center`}
-      ></CardContent>
-      <CardFooter className="absolute bottom-0 w-full p-3">
-        <div>
+      <CardContent className="p-0">
+        <div className="flex items-center justify-between">
           <CardTitle>{title}</CardTitle>
-          <CardDescription>{`$${price}`}</CardDescription>
+          <p>{`$${price}`}</p>
         </div>
-        <CardAction>
-          <Button>+</Button>
+        <div className="flex items-center justify-between">
+          <p>Categroy</p>
+          <div>Reviews</div>
+        </div>
+        <CardDescription>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum eius
+          architecto aliquam doloribus, nam tempora.
+        </CardDescription>
+        <div>
+          <p>Sizes and colours</p>
+        </div>
+        <CardAction className="w-full">
+          <Button
+            variant="outline"
+            className="rounded-full w-full bg-neutral-300 p-5 "
+          >
+            Add to cart
+          </Button>
         </CardAction>
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 };
