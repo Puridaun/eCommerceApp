@@ -1,22 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import type { User } from "@supabase/supabase-js";
-
-interface AuthProviderType {
-  user: User | null;
-  signUp: (
-    email: string,
-    password: string,
-    fullName?: string
-  ) => Promise<{ data: any; error: any }>;
-  signIn: (
-    email: string,
-    password: string
-  ) => Promise<{ data: any; error: any }>;
-  signOut: () => Promise<{ error: any }>;
-  resetPassword: (email: string) => Promise<{ data: any; error: any }>;
-  loading: boolean;
-}
+import type { AuthProviderType } from "./types";
 
 export const AuthContext = createContext<AuthProviderType | null>(null);
 

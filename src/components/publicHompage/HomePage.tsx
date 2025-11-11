@@ -7,14 +7,8 @@ export const HomePage: React.FC = () => {
 
   return (
     <main className="p-4">
-      <div className="container mx-auto ">
-        {user ? (
-          <>
-            <ItemsDashboard />
-          </>
-        ) : (
-          "Conecteaza-te pentru a continua"
-        )}
+      <div className="container mx-auto">
+        {user ? <ItemsDashboard /> : "Conecteaza-te pentru a continua"}
       </div>
     </main>
   );

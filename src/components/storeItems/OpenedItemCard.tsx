@@ -14,12 +14,14 @@ export const OpenedItemCard: React.FC<{
   price: number;
   title: string;
   imgUrl: string;
-}> = ({ price, title, imgUrl }) => {
+  description: string;
+  category: string;
+}> = ({ price, title, imgUrl, category, description }) => {
   return (
-    <Card className="relative max-w-[360px]  h-[540px] p-4 overflow-hidden">
+    <Card className="relative w-[320px]  h-[540px] p-4 overflow-hidden">
       <CardHeader
-        className={`container p-0 w-full h-[75%] bg-cover bg-center`}
-        style={{ backgroundImage: `url(/itemsImages/${imgUrl})` }}
+        className={`container p-0 w-full h-full bg-cover bg-center bg-contain bg-no-repeat`}
+        style={{ backgroundImage: `url(${imgUrl})` }}
       >
         <div className="flex justify-between w-full">
           <Button variant="outline" className="rounded-full bg-neutral-300 p-5">
@@ -38,16 +40,15 @@ export const OpenedItemCard: React.FC<{
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex items-center justify-between">
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="truncate w-48">{title}</CardTitle>
           <p>{`$${price}`}</p>
         </div>
         <div className="flex items-center justify-between">
-          <p>Categroy</p>
+          <p>{category}</p>
           <div>Reviews</div>
         </div>
-        <CardDescription>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum eius
-          architecto aliquam doloribus, nam tempora.
+        <CardDescription className="truncate w-64 ">
+          {description}
         </CardDescription>
         <div>
           <p>Sizes and colours</p>
