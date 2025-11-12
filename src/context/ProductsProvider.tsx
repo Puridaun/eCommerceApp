@@ -4,9 +4,13 @@ import axios from "axios";
 
 interface ProductsContextType {
   products: Products[];
-  fetchProducts: () => {};
+  filteredProducts: Products[];
+  categories: string[];
   loading: boolean;
-  error: string;
+  error: string | undefined;
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  fetchProducts: () => Promise<void>;
 }
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
@@ -18,11 +22,10 @@ const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
   const [filteredProducts, setFilteredProducts] = useState<Products[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [filters, setFilters] = useState<Filters>({
-    category: null,
-    minPrice: null,
-    maxPrice: null,
+    category: [],
+    price: [],
     searchQuery: "",
     sortBy: null,
   });
@@ -30,7 +33,7 @@ const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      setError(null);
+      setError(undefined);
 
       const response = await axios.get<Products[]>(
         "https://fakestoreapi.com/products"

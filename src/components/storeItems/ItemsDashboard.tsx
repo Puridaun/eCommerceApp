@@ -4,7 +4,7 @@ import { OpenedItemCard } from "./OpenedItemCard";
 import ItemsFilters from "./ItemsFilters";
 import useProducts from "../../hooks/useProducts";
 
-const filters = [
+const filtersList = [
   { name: "Category", options: ["Men", "Women", "Electronics", "Jewelery"] },
   { name: "Price", options: ["0-50", "50-100", "100-200", "200+"] },
 ];
@@ -19,7 +19,7 @@ const ItemsDashboard: React.FC = () => {
   if (error) return <p className="text-red-500">{error}</p>;
   return (
     <div className="w-full flex gap-10">
-      <ItemsFilters filters={filters} />
+      <ItemsFilters filtersList={filtersList} />
       <ItemsGrid>
         {products.map((product) => (
           <OpenedItemCard

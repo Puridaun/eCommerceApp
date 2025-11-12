@@ -30,9 +30,8 @@ export type Products = {
 };
 
 export type Filters = {
-  category: null;
-  minPrice: null;
-  maxPrice: null;
+  category: string[];
+  price: string[];
   searchQuery: "";
   sortBy: null;
 };
