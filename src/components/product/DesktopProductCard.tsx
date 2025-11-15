@@ -1,55 +1,49 @@
-import { IconArrowLeft, IconHeart } from "@tabler/icons-react";
 import React from "react";
+import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import {
   Card,
   CardAction,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import type { Products } from "../../context/types";
 
-export const OpenedItemCard: React.FC<{
+export const DesktopProductCard: React.FC<{
   price: number;
   title: string;
   imgUrl: string;
-  description: string;
+  description?: string;
   category: string;
-}> = ({ price, title, imgUrl, category, description }) => {
+  product: Products;
+}> = ({ price, title, imgUrl, category, description, product }) => {
+  const navigate = useNavigate();
   return (
     <Card className="relative w-[320px]  h-[540px] p-4 overflow-hidden">
       <CardHeader
+        onClick={() => {
+          navigate(`/products/${product.id}`);
+        }}
         className={`container p-0 w-full h-full bg-cover bg-center bg-contain bg-no-repeat`}
         style={{ backgroundImage: `url(${imgUrl})` }}
-      >
-        <div className="flex justify-between w-full">
-          <Button variant="outline" className="rounded-full bg-neutral-300 p-5">
-            <IconArrowLeft stroke={2} />
-          </Button>
-          <Button
-            variant="outline"
-            className="relative rounded-full bg-neutral-300 p-5 "
-          >
-            <IconHeart stroke={2} />
-            <div className="rounded-full bg-red-500 py-0.5 px-1.5  text-[8px] absolute right-[-4px] top-[-4px] text-neutral-100">
-              1
-            </div>
-          </Button>
-        </div>
-      </CardHeader>
+      ></CardHeader>
       <CardContent className="p-0">
         <div className="flex items-center justify-between">
-          <CardTitle className="truncate w-48">{title}</CardTitle>
+          <CardTitle
+            onClick={() => {
+              navigate(`/products/${product.id}`);
+            }}
+            className="truncate w-64 cursor-pointer"
+          >
+            {title}
+          </CardTitle>
           <p>{`$${price}`}</p>
         </div>
         <div className="flex items-center justify-between">
           <p>{category}</p>
           <div>Reviews</div>
         </div>
-        <CardDescription className="truncate w-64 ">
-          {description}
-        </CardDescription>
         <div>
           <p>Sizes and colours</p>
         </div>

@@ -10,7 +10,7 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 
-export const ItemCard: React.FC<{
+export const ProductCard: React.FC<{
   price: number;
   title: string;
   imgUrl: string;

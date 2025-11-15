@@ -10,6 +10,7 @@ interface ProductsContextType {
   error: string | undefined;
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  setFilteredProducts: React.Dispatch<React.SetStateAction<Products[]>>;
   fetchProducts: () => Promise<void>;
 }
 
@@ -35,15 +36,13 @@ const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
       setLoading(true);
       setError(undefined);
 
-      const response = await axios.get<Products[]>(
+      const { data } = await axios.get<Products[]>(
         "https://fakestoreapi.com/products"
       );
-      setProducts(response.data);
-      setFilteredProducts(response.data);
+      setProducts(data);
+      setFilteredProducts(data);
 
-      const uniqueCategories = [
-        ...new Set(response.data.map((p) => p.category)),
-      ];
+      const uniqueCategories = [...new Set(data.map((p) => p.category))];
       setCategories(uniqueCategories);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch products");
@@ -62,6 +61,7 @@ const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
     filters,
     setFilters,
     fetchProducts,
+    setFilteredProducts,
   };
 
   return (

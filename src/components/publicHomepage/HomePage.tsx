@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../../hooks/useAuth";
-import ItemsDashboard from "../storeItems/ItemsDashboard";
+import ProductsDashboard from "../product/ProductsDashboard";
 
 export const HomePage: React.FC = () => {
   const { user } = useAuth();
@@ -8,7 +8,7 @@ export const HomePage: React.FC = () => {
   return (
     <main className="p-4">
       <div className="container mx-auto">
-        {user ? <ItemsDashboard /> : "Conecteaza-te pentru a continua"}
+        {user ? <ProductsDashboard /> : "Conecteaza-te pentru a continua"}
       </div>
     </main>
   );

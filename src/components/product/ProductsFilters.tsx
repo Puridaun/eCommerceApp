@@ -12,16 +12,32 @@ import type { CheckedState } from "@radix-ui/react-checkbox";
 import useProducts from "../../hooks/useProducts";
 import type { Filters } from "../../context/types";
 
-export type filterType = {
-  name: string;
-  options: string[];
-};
-
-const ItemsFilters: React.FC<{ filtersList: filterType[] }> = ({
-  filtersList,
-}) => {
-  const { filters, setFilters } = useProducts();
+const ProductsFilter: React.FC<{ filterGroups: any }> = ({ filterGroups }) => {
+  const { filters, setFilters, setFilteredProducts, products } = useProducts();
   const [openedIndex, setOpenIndex] = React.useState<number[]>([]);
+
+  const handleSaveFilters = () => {
+    if (filters.category.length > 0) {
+      setFilteredProducts(() =>
+        products.filter((item) => {
+          return filters.category.includes(item.category);
+        })
+      );
+    } else if (filters.price.length > 0) {
+      const ranges = filters.price.map(priceRange);
+      console.log(ranges);
+      setFilteredProducts(() =>
+        products.filter((item) =>
+          ranges.some(
+            ({ minPrice, maxPrice }) =>
+              item.price >= minPrice && item.price <= maxPrice
+          )
+        )
+      );
+    } else {
+      setFilteredProducts(products);
+    }
+  };
 
   const handleOpenedIndex = (index: number) => {
     if (openedIndex.includes(index))
@@ -33,26 +49,37 @@ const ItemsFilters: React.FC<{ filtersList: filterType[] }> = ({
     checkedOption: string,
     filterProp: keyof Filters
   ) => {
-    setFilters((prev: any) => {
-      const prevValues = Array.isArray(prev[filterProp])
-        ? prev[filterProp]
-        : [];
-
-      const newValues = event
-        ? [...prevValues, checkedOption]
-        : prevValues.filter((c: string) => c !== checkedOption);
-
-      return {
-        ...prev,
-        [filterProp]: newValues,
-      };
-    });
+    setFilters((prev: Filters) => ({
+      ...prev,
+      [filterProp]: event
+        ? Array.isArray(prev[filterProp])
+          ? [...prev[filterProp], checkedOption]
+          : checkedOption
+        : Array.isArray(prev[filterProp])
+        ? prev[filterProp].filter((el: string) => el !== checkedOption)
+        : "",
+    }));
   };
+
+  const priceRange = (string: string) => {
+    if (string.includes("+")) {
+      const minPrice = Number(string.replace("+", ""));
+      return { minPrice, maxPrice: Infinity };
+    } else {
+      const [value1, value2] = string.split("-").map(Number);
+      return {
+        minPrice: Math.min(value1, value2),
+        maxPrice: Math.max(value1, value2),
+      };
+    }
+  };
+
+  priceRange("500-700");
 
   return (
     <div className="w-[160px] flex flex-col ">
       <h1>Filters</h1>
-      {filtersList?.map((filter: filterType, index: number) => (
+      {filterGroups?.map((group: any, index: number) => (
         <Collapsible
           key={index}
           open={openedIndex.includes(index)}
@@ -60,7 +87,7 @@ const ItemsFilters: React.FC<{ filtersList: filterType[] }> = ({
           className="flex flex-col gap-2"
         >
           <div className="w-fit flex items-center justify-between gap-2 ">
-            <h4 className="w-fit text-sm font-semibold">{filter.name}</h4>
+            <h4 className="w-fit text-sm font-semibold">{group.groupName}</h4>
             <CollapsibleTrigger asChild>
               <Button
                 onClick={() => setOpenIndex((prev) => [...prev, index])}
@@ -77,9 +104,9 @@ const ItemsFilters: React.FC<{ filtersList: filterType[] }> = ({
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="flex flex-col gap-2">
-            {filter.options.map((option: string, idx: number) => {
-              const uniqueId = `${filter.name}-${idx}`;
-              const filterProp = filter.name.toLowerCase(); //de inlocuit nu e ok
+            {group.groupOptions.map((option: string, idx: number) => {
+              const uniqueId = `${group.groupName}-${idx}`;
+              const filterProp = group.groupName.toLowerCase();
               return (
                 <div key={idx} className="flex items-center gap-3">
                   <Checkbox
@@ -99,8 +126,17 @@ const ItemsFilters: React.FC<{ filtersList: filterType[] }> = ({
           </CollapsibleContent>
         </Collapsible>
       ))}
+      <Button
+        className="my-4"
+        variant="outline"
+        onClick={() => {
+          handleSaveFilters();
+        }}
+      >
+        Save filters
+      </Button>
     </div>
   );
 };
 
-export default ItemsFilters;
+export default ProductsFilter;

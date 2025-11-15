@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import React, { type ReactNode } from "react";
 
-const ItemsGrid: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ProductsGrid: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="w-full">
       <Box sx={{ flexGrow: 1 }}>
@@ -20,4 +20,4 @@ const ItemsGrid: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-export default ItemsGrid;
+export default ProductsGrid;
