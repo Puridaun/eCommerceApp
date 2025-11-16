@@ -1,18 +1,11 @@
 import React, { createContext, useState, type ReactNode } from "react";
-import type { Filters, Products } from "./types";
+import type {
+  CartProduct,
+  Filters,
+  Products,
+  ProductsContextType,
+} from "./types";
 import axios from "axios";
-
-interface ProductsContextType {
-  products: Products[];
-  filteredProducts: Products[];
-  categories: string[];
-  loading: boolean;
-  error: string | undefined;
-  filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
-  setFilteredProducts: React.Dispatch<React.SetStateAction<Products[]>>;
-  fetchProducts: () => Promise<void>;
-}
 
 export const ProductsContext = createContext<ProductsContextType | null>(null);
 
@@ -20,6 +13,7 @@ const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
   children,
 }) => {
   const [products, setProducts] = useState<Products[]>([]);
+  const [cart, setCart] = useState<CartProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Products[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,6 +56,8 @@ const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
     setFilters,
     fetchProducts,
     setFilteredProducts,
+    cart,
+    setCart,
   };
 
   return (

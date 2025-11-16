@@ -17,7 +17,7 @@ export const DesktopProductCard: React.FC<{
   description?: string;
   category: string;
   product: Products;
-}> = ({ price, title, imgUrl, category, description, product }) => {
+}> = ({ price, title, imgUrl, category, product }) => {
   const navigate = useNavigate();
   return (
     <Card className="relative w-[320px]  h-[540px] p-4 overflow-hidden">
@@ -49,6 +49,9 @@ export const DesktopProductCard: React.FC<{
         </div>
         <CardAction className="w-full">
           <Button
+            onClick={() => {
+              navigate(`/products/${product.id}`);
+            }}
             variant="outline"
             className="rounded-full w-full bg-neutral-300 p-5 "
           >

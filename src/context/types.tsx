@@ -35,3 +35,21 @@ export type Filters = {
   searchQuery: "";
   sortBy: null;
 };
+
+export type CartProduct = {
+  cartProduct: Products | null;
+  quantity: number;
+};
+export interface ProductsContextType {
+  products: Products[];
+  filteredProducts: Products[];
+  categories: string[];
+  loading: boolean;
+  error: string | undefined;
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  setFilteredProducts: React.Dispatch<React.SetStateAction<Products[]>>;
+  fetchProducts: () => Promise<void>;
+  cart: CartProduct[];
+  setCart: React.Dispatch<React.SetStateAction<CartProduct[]>>;
+}

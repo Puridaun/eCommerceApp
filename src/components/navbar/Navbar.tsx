@@ -1,20 +1,20 @@
+import {
+  IconArrowsSort,
+  IconFilter2,
+  IconHeart,
+  IconShoppingCart,
+} from "@tabler/icons-react";
 import React, { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import useProducts from "../../hooks/useProducts";
 import { AuthModal } from "../auth/AuthModal";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Link } from "react-router";
 
 const Navbar: React.FC = () => {
   const { signOut, user } = useAuth();
-  const {
-    filters,
-    setFilters,
-    filteredProducts,
-    setFilteredProducts,
-    products,
-  } = useProducts();
+  const { filters, setFilters, cart, setFilteredProducts, products } =
+    useProducts();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -73,12 +73,22 @@ const Navbar: React.FC = () => {
             </Button>
           </div>
           <div className="flex gap-4 items-center">
-            <Link to="/cart">Cart</Link>
-            <Link to="/favorite">Favorite</Link>
+            <Button className="relative" variant="ghost">
+              Cart
+              <IconShoppingCart />
+              {cart.length ? (
+                <div className="absolute border rounded-full bg-neutral-700 text-neutral-100 px-1.5 py-0.5 text-[8px] top-1 right-0">
+                  {cart.length}
+                </div>
+              ) : null}
+            </Button>
+            <Button variant="ghost">
+              Favorite <IconHeart />
+            </Button>
           </div>
         </div>
       </div>
-      <div className="container mx-auto flex justify-between items-center ">
+      <div className="container mx-auto flex justify-between items-center py-2 ">
         <div>I dont know</div>
         <div>
           <Button variant="ghost">Men</Button>
@@ -88,8 +98,14 @@ const Navbar: React.FC = () => {
           <Button variant="ghost">Jewelery</Button>
         </div>
         <div>
-          <Button variant="ghost">Filters</Button>
-          <Button variant="ghost">Sort by</Button>
+          <Button variant="ghost">
+            Filters
+            <IconFilter2 />
+          </Button>
+          <Button variant="ghost">
+            Sort by
+            <IconArrowsSort />
+          </Button>
         </div>
       </div>
       <AuthModal
