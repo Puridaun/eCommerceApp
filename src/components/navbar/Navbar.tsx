@@ -10,14 +10,21 @@ import useProducts from "../../hooks/useProducts";
 import { AuthModal } from "../auth/AuthModal";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { useCart } from "../../hooks/useCart";
 
 const Navbar: React.FC = () => {
   const { signOut, user } = useAuth();
-  const { filters, setFilters, cart, setFilteredProducts, products } =
-    useProducts();
+  const {
+    filters,
+    setFilters,
+
+    setFilteredProducts,
+    products,
+    favoriteProducts,
+  } = useProducts();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [searchValue, setSearchValue] = useState<string>("");
-
+  const { cartTotal, cartProducts } = useCart();
   const handleSearchItems = () => {
     const query = searchValue.trim().toLowerCase();
 
@@ -76,14 +83,19 @@ const Navbar: React.FC = () => {
             <Button className="relative" variant="ghost">
               Cart
               <IconShoppingCart />
-              {cart.length ? (
+              {cartTotal ? (
                 <div className="absolute border rounded-full bg-neutral-700 text-neutral-100 px-1.5 py-0.5 text-[8px] top-1 right-0">
-                  {cart.length}
+                  {cartTotal}
                 </div>
               ) : null}
             </Button>
-            <Button variant="ghost">
+            <Button className="relative" variant="ghost">
               Favorite <IconHeart />
+              {favoriteProducts.length ? (
+                <div className="absolute border rounded-full bg-neutral-700 text-neutral-100 px-1.5 py-0.5 text-[8px] top-1 right-0">
+                  {favoriteProducts.length}
+                </div>
+              ) : null}
             </Button>
           </div>
         </div>

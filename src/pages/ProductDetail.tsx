@@ -1,5 +1,6 @@
 import {
   IconHeart,
+  IconHeartFilled,
   IconMinus,
   IconPlus,
   IconShoppingCart,
@@ -9,15 +10,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { apiClient } from "../apiClient";
 import { Button } from "../components/ui/button";
-import type { Products } from "../context/types";
+import type { ProductsType } from "../context/types";
 import useProducts from "../hooks/useProducts";
+import { useCart } from "../hooks/useCart";
 
 const ProductDetail = () => {
   const params = useParams();
-  const { cart, setCart } = useProducts();
-  const [product, setProduct] = useState<Products | null>(null);
-  const [counter, setCounter] = useState<number>(0);
-  const [counterErr, setCounterErr] = useState<boolean>(false);
+  const { favoriteProducts, setFavoriteProducts } = useProducts();
+  const [product, setProduct] = useState<ProductsType | null>(null);
+  const [counter, setCounter] = useState<number>(1);
+  const [quantityErr, setQuantityErr] = useState<boolean>(false);
+  const { addToCart } = useCart();
   const getProductById = async () => {
     const { data } = await apiClient.get(
       `https://fakestoreapi.com/products/${params.id}`
@@ -29,27 +32,18 @@ const ProductDetail = () => {
   useEffect(() => {
     getProductById();
   }, []);
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
 
-  const handleAddToCart = () => {
-    if (product && counter > 0) {
-      setCounterErr(false);
-      setCart((prev) => [
-        ...prev,
-        {
-          cartProduct: product,
-          quantity: counter,
-        },
-      ]);
-    } else setCounterErr(true);
+  const handleAddToFavorite = () => {
+    if (!product) return;
+
+    setFavoriteProducts((prev) => [...prev, product]);
   };
+
   return (
     <div>
-      <div className="container flex w-full mx-auto gap-5">
+      <div className="container flex w-full justify-center mx-auto gap-5">
         <img className="border rounded-xl p-8" src={product?.image} />
-        <div className="flex flex-col gap-4 max-w-[500px]">
+        <div className="flex flex-col gap-4 max-w-[560px]">
           <div className="flex gap-1">
             <div className="flex gap-1">
               <IconStarFilled className="w-4" />
@@ -98,11 +92,10 @@ const ProductDetail = () => {
               <Button
                 variant="ghost"
                 onClick={() => {
-                  if (counter > 0) {
+                  if (counter > 1) {
                     setCounter(counter - 1);
                   } else {
                     setCounter(counter);
-                    setCounterErr(true);
                   }
                 }}
               >
@@ -113,23 +106,29 @@ const ProductDetail = () => {
                 variant="ghost"
                 onClick={() => {
                   setCounter(counter + 1);
-                  setCounterErr(false);
                 }}
               >
                 <IconPlus />
               </Button>
             </div>
-            {counterErr ? (
+            {quantityErr ? (
               <p className="text-red-500">Pick a quantity</p>
             ) : null}
           </div>
           <div className="flex items-center  gap-5">
-            <Button className="w-75" onClick={handleAddToCart}>
+            <Button
+              className="w-75"
+              onClick={() => addToCart(product!, counter)}
+            >
               <IconShoppingCart />
               Adauga in cos
             </Button>
-            <Button variant="outline">
-              <IconHeart />
+            <Button variant="outline" onClick={handleAddToFavorite}>
+              {product && favoriteProducts.some((p) => p.id === product.id) ? (
+                <IconHeartFilled />
+              ) : (
+                <IconHeart />
+              )}
             </Button>
           </div>
         </div>

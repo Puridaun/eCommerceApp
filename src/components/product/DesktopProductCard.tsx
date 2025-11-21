@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import type { Products } from "../../context/types";
+import type { ProductsType } from "../../context/types";
 
 export const DesktopProductCard: React.FC<{
   price: number;
@@ -16,7 +16,7 @@ export const DesktopProductCard: React.FC<{
   imgUrl: string;
   description?: string;
   category: string;
-  product: Products;
+  product: ProductsType;
 }> = ({ price, title, imgUrl, category, product }) => {
   const navigate = useNavigate();
   return (

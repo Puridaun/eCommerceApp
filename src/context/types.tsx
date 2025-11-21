@@ -16,7 +16,7 @@ export interface AuthProviderType {
   loading: boolean;
 }
 
-export type Products = {
+export type ProductsType = {
   id: number;
   title: string;
   price: number;
@@ -29,27 +29,40 @@ export type Products = {
   };
 };
 
-export type Filters = {
+export type FiltersType = {
   category: string[];
   price: string[];
   searchQuery: "";
   sortBy: null;
 };
 
-export type CartProduct = {
-  cartProduct: Products | null;
+export type CartProductType = {
+  cartProduct: ProductsType;
   quantity: number;
 };
-export interface ProductsContextType {
-  products: Products[];
-  filteredProducts: Products[];
+
+export interface ProductsContextInterface {
+  products: ProductsType[];
+  filteredProducts: ProductsType[];
   categories: string[];
   loading: boolean;
   error: string | undefined;
-  filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
-  setFilteredProducts: React.Dispatch<React.SetStateAction<Products[]>>;
+  filters: FiltersType;
+  setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
+  setFilteredProducts: React.Dispatch<React.SetStateAction<ProductsType[]>>;
   fetchProducts: () => Promise<void>;
-  cart: CartProduct[];
-  setCart: React.Dispatch<React.SetStateAction<CartProduct[]>>;
+  cartProducts: CartProductType[];
+  setCartProducts: React.Dispatch<React.SetStateAction<CartProductType[]>>;
+  favoriteProducts: ProductsType[];
+  setFavoriteProducts: React.Dispatch<React.SetStateAction<ProductsType[]>>;
+}
+
+export interface CartProductsInterface {
+  cartProducts: CartProductType[];
+  setCartProducts: React.Dispatch<React.SetStateAction<CartProductType[]>>;
+  addToCart: (product: ProductsType, quantity: number) => void;
+  removeFromCart: (product: ProductsType) => void;
+  updateQuantity: (product: ProductsType, quantity: number) => void;
+  clearCart: () => void;
+  cartTotal: number;
 }

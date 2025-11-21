@@ -1,36 +1,59 @@
-import React, { createContext, useState, type ReactNode } from "react";
-import type {
-  CartProduct,
-  Filters,
-  Products,
-  ProductsContextType,
-} from "./types";
 import axios from "axios";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import type {
+  CartProductType,
+  FiltersType,
+  ProductsType,
+  ProductsContextInterface,
+} from "./types";
 
-export const ProductsContext = createContext<ProductsContextType | null>(null);
+export const ProductsContext = createContext<ProductsContextInterface | null>(
+  null
+);
 
-const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
-  children,
-}) => {
-  const [products, setProducts] = useState<Products[]>([]);
-  const [cart, setCart] = useState<CartProduct[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Products[]>([]);
+const ProductsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [products, setProducts] = useState<ProductsType[]>([]);
+  const [cartProducts, setCartProducts] = useState<CartProductType[]>([]);
+  const [favoriteProducts, setFavoriteProducts] = useState<ProductsType[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductsType[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [filters, setFilters] = useState<Filters>({
+  const [filters, setFilters] = useState<FiltersType>({
     category: [],
     price: [],
     searchQuery: "",
     sortBy: null,
   });
 
+  useEffect(() => {
+    const savedFilters = localStorage.getItem("ecommerce_filters");
+    if (savedFilters) {
+      try {
+        setFilters(JSON.parse(savedFilters));
+        console.log("Filters loaded from localStorage");
+      } catch (err) {
+        console.error("Failed to parse filters:", err);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("ecommerce_filters", JSON.stringify(filters));
+    console.log("Filters saved to localStorage");
+  }, [filters]);
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
       setError(undefined);
 
-      const { data } = await axios.get<Products[]>(
+      const { data } = await axios.get<ProductsType[]>(
         "https://fakestoreapi.com/products"
       );
       setProducts(data);
@@ -56,8 +79,10 @@ const ProductsProvider: React.FC<{ children: ReactNode | null }> = ({
     setFilters,
     fetchProducts,
     setFilteredProducts,
-    cart,
-    setCart,
+    cartProducts,
+    setCartProducts,
+    setFavoriteProducts,
+    favoriteProducts,
   };
 
   return (
