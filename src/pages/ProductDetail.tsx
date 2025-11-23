@@ -9,18 +9,19 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { apiClient } from "../apiClient";
+import { CartSheet } from "../components/cartProducts/CartSheet";
 import { Button } from "../components/ui/button";
 import type { ProductsType } from "../context/types";
-import useProducts from "../hooks/useProducts";
 import { useCart } from "../hooks/useCart";
+import { useFavorite } from "../hooks/useFavorite";
 
 const ProductDetail = () => {
   const params = useParams();
-  const { favoriteProducts, setFavoriteProducts } = useProducts();
+  const { addToCart } = useCart();
+  const { addToFavorite, favoriteProducts } = useFavorite();
   const [product, setProduct] = useState<ProductsType | null>(null);
   const [counter, setCounter] = useState<number>(1);
-  const [quantityErr, setQuantityErr] = useState<boolean>(false);
-  const { addToCart } = useCart();
+  const [openCart, setOpenCart] = useState(false);
   const getProductById = async () => {
     const { data } = await apiClient.get(
       `https://fakestoreapi.com/products/${params.id}`
@@ -33,12 +34,7 @@ const ProductDetail = () => {
     getProductById();
   }, []);
 
-  const handleAddToFavorite = () => {
-    if (!product) return;
-
-    setFavoriteProducts((prev) => [...prev, product]);
-  };
-
+  const isInFavorite = favoriteProducts.some((item) => item.id === product?.id);
   return (
     <div>
       <div className="container flex w-full justify-center mx-auto gap-5">
@@ -111,24 +107,20 @@ const ProductDetail = () => {
                 <IconPlus />
               </Button>
             </div>
-            {quantityErr ? (
-              <p className="text-red-500">Pick a quantity</p>
-            ) : null}
           </div>
           <div className="flex items-center  gap-5">
             <Button
               className="w-75"
-              onClick={() => addToCart(product!, counter)}
+              onClick={() => {
+                addToCart(product!, counter);
+                setOpenCart(true);
+              }}
             >
               <IconShoppingCart />
               Adauga in cos
             </Button>
-            <Button variant="outline" onClick={handleAddToFavorite}>
-              {product && favoriteProducts.some((p) => p.id === product.id) ? (
-                <IconHeartFilled />
-              ) : (
-                <IconHeart />
-              )}
+            <Button variant="outline" onClick={() => addToFavorite(product!)}>
+              {isInFavorite ? <IconHeartFilled /> : <IconHeart />}
             </Button>
           </div>
         </div>
@@ -137,6 +129,7 @@ const ProductDetail = () => {
         <p className="text-xl mb-5">Descriere</p>
         <p className="w-[586px]">{`${product?.description}. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum perferendis laboriosam doloremque esse ad assumenda consequatur, expedita fugiat provident nulla nostrum, nihil qui, beatae culpa! Maiores quidem natus excepturi explicabo.`}</p>
       </div>
+      <CartSheet open={openCart} onOpenChange={setOpenCart} />
     </div>
   );
 };

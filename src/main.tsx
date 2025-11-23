@@ -1,11 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import { BrowserRouter } from "react-router";
 import { App } from "./App";
 import { AuthProvider } from "./context/AuthContext";
-import ProductsProvider from "./context/ProductsProvider";
-import { BrowserRouter } from "react-router";
-import CartProductsProvider from "./context/CartProductsProvider";
+import CartProductsProvider from "./context/CartProductsContext";
+import FavoriteProductsProvider from "./context/FavoriteProductsContext";
+import ProductsProvider from "./context/ProductsContext";
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -13,7 +14,9 @@ createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <ProductsProvider>
           <CartProductsProvider>
-            <App />
+            <FavoriteProductsProvider>
+              <App />
+            </FavoriteProductsProvider>
           </CartProductsProvider>
         </ProductsProvider>
       </AuthProvider>

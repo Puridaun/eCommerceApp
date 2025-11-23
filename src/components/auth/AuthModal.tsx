@@ -8,7 +8,7 @@ interface AuthModalProps {
   onClose: () => void;
 }
 
-export function AuthModal({ isOpen, onClose }: AuthModalProps) {
+export const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [mode, setMode] = useState<"signup" | "signin">("signin");
 
   const handleSuccess = () => {
@@ -41,4 +41,4 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

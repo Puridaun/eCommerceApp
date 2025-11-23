@@ -11,20 +11,17 @@ import { AuthModal } from "../auth/AuthModal";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useCart } from "../../hooks/useCart";
+import { useFavorite } from "../../hooks/useFavorite";
+import { CartSheet } from "../cartProducts/CartSheet";
 
 const Navbar: React.FC = () => {
   const { signOut, user } = useAuth();
-  const {
-    filters,
-    setFilters,
-
-    setFilteredProducts,
-    products,
-    favoriteProducts,
-  } = useProducts();
+  const { filters, setFilters, setFilteredProducts, products } = useProducts();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
   const [searchValue, setSearchValue] = useState<string>("");
-  const { cartTotal, cartProducts } = useCart();
+  const { cartTotal } = useCart();
+  const { favoriteTotal } = useFavorite();
   const handleSearchItems = () => {
     const query = searchValue.trim().toLowerCase();
 
@@ -80,7 +77,13 @@ const Navbar: React.FC = () => {
             </Button>
           </div>
           <div className="flex gap-4 items-center">
-            <Button className="relative" variant="ghost">
+            <Button
+              onClick={() => {
+                setOpenCart(true);
+              }}
+              className="relative"
+              variant="ghost"
+            >
               Cart
               <IconShoppingCart />
               {cartTotal ? (
@@ -91,9 +94,9 @@ const Navbar: React.FC = () => {
             </Button>
             <Button className="relative" variant="ghost">
               Favorite <IconHeart />
-              {favoriteProducts.length ? (
+              {favoriteTotal ? (
                 <div className="absolute border rounded-full bg-neutral-700 text-neutral-100 px-1.5 py-0.5 text-[8px] top-1 right-0">
-                  {favoriteProducts.length}
+                  {favoriteTotal}
                 </div>
               ) : null}
             </Button>
@@ -124,6 +127,7 @@ const Navbar: React.FC = () => {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />
+      <CartSheet open={openCart} onOpenChange={setOpenCart} />
     </div>
   );
 };

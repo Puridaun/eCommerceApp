@@ -30,7 +30,7 @@ const ProductsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     searchQuery: "",
     sortBy: null,
   });
-
+  const [isHydrated, setIsHydrated] = useState(false);
   useEffect(() => {
     const savedFilters = localStorage.getItem("ecommerce_filters");
     if (savedFilters) {
@@ -41,10 +41,12 @@ const ProductsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         console.error("Failed to parse filters:", err);
       }
     }
+    setIsHydrated(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("ecommerce_filters", JSON.stringify(filters));
+    if (isHydrated)
+      localStorage.setItem("ecommerce_filters", JSON.stringify(filters));
     console.log("Filters saved to localStorage");
   }, [filters]);
 

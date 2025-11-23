@@ -66,3 +66,12 @@ export interface CartProductsInterface {
   clearCart: () => void;
   cartTotal: number;
 }
+
+export interface FavoriteProductsInterface {
+  favoriteProducts: ProductsType[];
+  setFavoriteProducts: React.Dispatch<React.SetStateAction<ProductsType[]>>;
+  addToFavorite: (product: ProductsType) => void;
+  removeFromFavorite: (product: ProductsType) => void;
+  clearFavorite: () => void;
+  favoriteTotal: number;
+}

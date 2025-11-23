@@ -18,7 +18,7 @@ const CartProductsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [cartProducts, setCartProducts] = useState<CartProductType[]>([]);
-
+  const [isHydrated, setIsHydrated] = useState(false);
   useEffect(() => {
     const savedCart = localStorage.getItem("ecommerce_cart");
     if (savedCart) {
@@ -29,12 +29,14 @@ const CartProductsProvider: React.FC<{ children: ReactNode }> = ({
         console.error("Failed to parse cart:", err);
       }
     }
+    setIsHydrated(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("ecommerce_cart", JSON.stringify(cartProducts));
-    console.log("Cart saved to localStorage");
-  }, [cartProducts]);
+    if (isHydrated) {
+      localStorage.setItem("ecommerce_cart", JSON.stringify(cartProducts));
+    }
+  }, [cartProducts, isHydrated]);
 
   const addToCart = (product: ProductsType, quantity: number) => {
     quantity > 0
