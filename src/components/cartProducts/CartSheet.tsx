@@ -1,6 +1,5 @@
 // components/cartProducts/CartSheet.tsx
 import { Trash2 } from "lucide-react";
-import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../hooks/useCart";
 import { Button } from "../ui/button";
@@ -11,6 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../ui/sheet";
+import { useAuth } from "../../hooks/useAuth";
 
 interface CartSheetProps {
   open: boolean;
@@ -18,20 +18,19 @@ interface CartSheetProps {
 }
 
 export const CartSheet = ({ open, onOpenChange }: CartSheetProps) => {
-  const { cartProducts, removeFromCart, clearCart } = useCart();
+  const { cartProducts, removeFromCart, clearCart, totalPrice } = useCart();
+  const { user, setShowAuthModal } = useAuth();
 
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    onOpenChange(false);
-    navigate("/checkout");
+    if (!user) {
+      setShowAuthModal(true);
+    } else {
+      onOpenChange(false);
+      navigate("/checkout");
+    }
   };
-
-  const totalPrice = useMemo(() => {
-    return cartProducts.reduce((sum, item) => {
-      return sum + item.cartProduct.price * item.quantity;
-    }, 0);
-  }, [cartProducts]);
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -95,10 +94,7 @@ export const CartSheet = ({ open, onOpenChange }: CartSheetProps) => {
                   Continuă cumpărăturile
                 </Button>
 
-                <Button
-                  onClick={handleCheckout}
-                  className="w-full bg-green-600 hover:bg-green-700"
-                >
+                <Button onClick={handleCheckout} className="w-full  ">
                   Mergi la plată
                 </Button>
 

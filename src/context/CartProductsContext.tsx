@@ -1,6 +1,7 @@
 import React, {
   createContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -39,16 +40,29 @@ const CartProductsProvider: React.FC<{ children: ReactNode }> = ({
   }, [cartProducts, isHydrated]);
 
   const addToCart = (product: ProductsType, quantity: number) => {
-    quantity > 0
-      ? setCartProducts((prev) => [
-          ...prev,
-          {
-            cartProduct: product,
-            quantity: quantity,
-          },
-        ])
-      : null;
+    if (quantity <= 0) return;
+
+    setCartProducts((prev) => {
+      const existing = prev.find((item) => item.cartProduct.id === product.id);
+
+      if (existing) {
+        return prev.map((item) =>
+          item.cartProduct.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      }
+
+      return [
+        ...prev,
+        {
+          cartProduct: product,
+          quantity,
+        },
+      ];
+    });
   };
+
   const removeFromCart = (product: ProductsType) => {
     cartProducts
       ? setCartProducts((prev) =>
@@ -72,6 +86,12 @@ const CartProductsProvider: React.FC<{ children: ReactNode }> = ({
 
   const cartTotal = cartProducts.length;
 
+  const totalPrice = useMemo(() => {
+    return cartProducts.reduce((sum, item) => {
+      return sum + item.cartProduct.price * item.quantity;
+    }, 0);
+  }, [cartProducts]);
+
   const value = {
     cartProducts,
     addToCart,
@@ -80,6 +100,7 @@ const CartProductsProvider: React.FC<{ children: ReactNode }> = ({
     clearCart,
     cartTotal,
     setCartProducts,
+    totalPrice,
   };
   return (
     <CartProductsContext.Provider value={value}>

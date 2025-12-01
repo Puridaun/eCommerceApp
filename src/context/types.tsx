@@ -13,6 +13,8 @@ export interface AuthProviderType {
   ) => Promise<{ data: any; error: any }>;
   signOut: () => Promise<{ error: any }>;
   resetPassword: (email: string) => Promise<{ data: any; error: any }>;
+  showAuthModal: boolean;
+  setShowAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;
 }
 
@@ -65,6 +67,7 @@ export interface CartProductsInterface {
   updateQuantity: (product: ProductsType, quantity: number) => void;
   clearCart: () => void;
   cartTotal: number;
+  totalPrice: number;
 }
 
 export interface FavoriteProductsInterface {

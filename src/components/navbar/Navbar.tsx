@@ -13,11 +13,12 @@ import { Input } from "../ui/input";
 import { useCart } from "../../hooks/useCart";
 import { useFavorite } from "../../hooks/useFavorite";
 import { CartSheet } from "../cartProducts/CartSheet";
+import { useNavigate } from "react-router";
 
 const Navbar: React.FC = () => {
-  const { signOut, user } = useAuth();
+  const navigate = useNavigate();
+  const { signOut, user, showAuthModal, setShowAuthModal } = useAuth();
   const { filters, setFilters, setFilteredProducts, products } = useProducts();
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const { cartTotal } = useCart();
@@ -42,6 +43,10 @@ const Navbar: React.FC = () => {
     setSearchValue("");
   };
 
+  const handleToOrders = () => {
+    user ? navigate("/orders") : setShowAuthModal(true);
+  };
+
   return (
     <div>
       <nav className="bg-white shadow p-2">
@@ -49,7 +54,9 @@ const Navbar: React.FC = () => {
           <h1 className="text-xl font-bold">E-Commerce Store</h1>
           <div className="flex gap-4  items-center justify-between">
             <Button variant="ghost">Home1</Button>
-            <Button variant="ghost">Home2</Button>
+            <Button onClick={handleToOrders} variant="ghost">
+              Orders
+            </Button>
             <Button variant="ghost">Home3</Button>
           </div>
           {user ? (

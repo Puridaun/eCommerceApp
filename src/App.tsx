@@ -25,9 +25,9 @@ export const App: React.FC = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="orders" element={<Orders />} />
           <Route path="order-success/:orderId" element={<OrderSuccess />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="orders" element={<Orders />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
