@@ -48,8 +48,8 @@ const OrderSuccess: React.FC = () => {
       if (!orderId) return;
 
       const { data, error } = await supabase
-        .from<Order>("orders")
-        .select("*")
+        .from("orders")
+        .select<string, Order>("*")
         .eq("id", orderId)
         .single();
 

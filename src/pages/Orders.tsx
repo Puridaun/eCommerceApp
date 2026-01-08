@@ -31,8 +31,8 @@ const Orders: React.FC = () => {
       if (!user) return;
 
       const { data, error } = await supabase
-        .from<OrderSummary>("orders")
-        .select("*")
+        .from("orders")
+        .select<string, OrderSummary>("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
