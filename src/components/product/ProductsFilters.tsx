@@ -1,16 +1,16 @@
-import { Checkbox } from "../ui/checkbox";
+import type { CheckedState } from "@radix-ui/react-checkbox";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import React from "react";
+import useProducts from "../../hooks/useProducts";
 import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { Label } from "../ui/label";
-import type { CheckedState } from "@radix-ui/react-checkbox";
-import useProducts from "../../hooks/useProducts";
-import type { Filters } from "../../context/types";
+import type { FiltersType } from "../../context/types";
 
 const ProductsFilter: React.FC<{ filterGroups: any }> = ({ filterGroups }) => {
   const { filters, setFilters, setFilteredProducts, products } = useProducts();
@@ -47,9 +47,9 @@ const ProductsFilter: React.FC<{ filterGroups: any }> = ({ filterGroups }) => {
   const handleCheck = (
     event: CheckedState,
     checkedOption: string,
-    filterProp: keyof Filters
+    filterProp: keyof FiltersType
   ) => {
-    setFilters((prev: Filters) => ({
+    setFilters((prev: FiltersType) => ({
       ...prev,
       [filterProp]: event
         ? Array.isArray(prev[filterProp])
@@ -74,10 +74,8 @@ const ProductsFilter: React.FC<{ filterGroups: any }> = ({ filterGroups }) => {
     }
   };
 
-  priceRange("500-700");
-
   return (
-    <div className="w-[160px] flex flex-col ">
+    <div className="sticky top-[172px] h-screen flex-shrink-0 overflow-y-auto  w-[160px] flex flex-col ">
       <h1>Filters</h1>
       {filterGroups?.map((group: any, index: number) => (
         <Collapsible
@@ -116,7 +114,11 @@ const ProductsFilter: React.FC<{ filterGroups: any }> = ({ filterGroups }) => {
                       filters.price.includes(option)
                     }
                     onCheckedChange={(event) =>
-                      handleCheck(event, option, filterProp as keyof Filters)
+                      handleCheck(
+                        event,
+                        option,
+                        filterProp as keyof FiltersType
+                      )
                     }
                   />
                   <Label htmlFor={idx.toString()}>{option}</Label>

@@ -48,8 +48,8 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div>
-      <nav className="bg-white shadow p-2">
+    <div className="sticky top-0 z-20 bg-white">
+      <nav className=" shadow p-2">
         <div className="container mx-auto  flex justify-between items-center">
           <h1 className="text-xl font-bold">E-Commerce Store</h1>
           <div className="flex gap-4  items-center justify-between">
@@ -70,8 +70,8 @@ const Navbar: React.FC = () => {
           )}
         </div>
       </nav>
-      <div className=" shadow p-2 ">
-        <div className="container mx-auto flex justify-between items-center">
+      <div className="shadow p-2 ">
+        <div className="container mx-auto flex justify-between items-center ">
           <div className="flex gap-4 w-[560px]">
             <Input
               placeholder="Search an item"
@@ -110,24 +110,25 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto flex justify-between items-center py-2 ">
-        <div>I dont know</div>
-        <div>
-          <Button variant="ghost">Men</Button>
-          <Button variant="ghost">Women</Button>
-          <Button variant="ghost">Kids</Button>
-          <Button variant="ghost">Electronics</Button>
-          <Button variant="ghost">Jewelery</Button>
-        </div>
-        <div>
-          <Button variant="ghost">
-            Filters
-            <IconFilter2 />
-          </Button>
-          <Button variant="ghost">
-            Sort by
-            <IconArrowsSort />
-          </Button>
+      <div className=" py-2 shadow">
+        <div className="container mx-auto flex justify-between items-center">
+          <div>
+            <Button variant="ghost">Men</Button>
+            <Button variant="ghost">Women</Button>
+            <Button variant="ghost">Kids</Button>
+            <Button variant="ghost">Electronics</Button>
+            <Button variant="ghost">Jewelery</Button>
+          </div>
+          <div>
+            <Button variant="ghost">
+              Filters
+              <IconFilter2 />
+            </Button>
+            <Button variant="ghost">
+              Sort by
+              <IconArrowsSort />
+            </Button>
+          </div>
         </div>
       </div>
       <AuthModal

@@ -1,14 +1,13 @@
 import React from "react";
+import { Button } from "../ui/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Button } from "../ui/button";
 
 export const ProductCard: React.FC<{
   price: number;

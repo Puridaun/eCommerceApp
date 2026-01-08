@@ -77,4 +77,5 @@ export interface FavoriteProductsInterface {
   removeFromFavorite: (product: ProductsType) => void;
   clearFavorite: () => void;
   favoriteTotal: number;
+  isFavorite: (product: ProductsType) => boolean;
 }

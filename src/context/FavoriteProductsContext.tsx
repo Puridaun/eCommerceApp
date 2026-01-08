@@ -46,6 +46,10 @@ const FavoriteProductsProvider: React.FC<{ children: ReactNode }> = ({
     } else removeFromFavorite(product);
   };
 
+  const isFavorite = (product: ProductsType) => {
+    return favoriteProducts.some((item) => item.id === product.id);
+  };
+
   const removeFromFavorite = (product: ProductsType) => {
     setFavoriteProducts((prev) =>
       prev.filter((item) => item.id !== product.id)
@@ -64,6 +68,7 @@ const FavoriteProductsProvider: React.FC<{ children: ReactNode }> = ({
     removeFromFavorite,
     clearFavorite,
     favoriteTotal,
+    isFavorite,
   };
   return (
     <FavoriteProductsContext.Provider value={value}>

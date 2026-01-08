@@ -36,81 +36,81 @@ const ProductDetail = () => {
 
   const isInFavorite = favoriteProducts.some((item) => item.id === product?.id);
   return (
-    <div>
-      <div className="container flex w-full justify-center mx-auto gap-5">
-        <img className="border rounded-xl p-8" src={product?.image} />
-        <div className="flex flex-col gap-4 max-w-[560px]">
-          <div className="flex gap-1">
-            <div className="flex gap-1">
+    <div className="container mx-auto py-10">
+      <div className="flex flex-col lg:flex-row gap-10">
+        <div className="flex justify-center lg:w-1/2">
+          <img
+            className="border rounded-xl p-8 max-w-[420px] w-full object-contain"
+            src={product?.image}
+            alt={product?.title}
+          />
+        </div>
+
+        <div className="flex flex-col gap-4 lg:w-1/2">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1 text-yellow-500">
               <IconStarFilled className="w-4" />
               <IconStarFilled className="w-4" />
               <IconStarFilled className="w-4" />
               <IconStarFilled className="w-4" />
               <IconStarFilled className="w-4" />
             </div>
-            <p>{`${product?.rating.count} Reviews`}</p>
+            <p className="text-gray-600">{product?.rating.count} Reviews</p>
           </div>
-          <h1 className="text-[32px]">{product?.title}</h1>
-          <h1 className="text-[32px]">{`${product?.price} $`}</h1>
-          <div>
-            <p>Marime:</p>
-            <div className="flex gap-1">
-              <Button variant="secondary">XXS</Button>
-              <Button variant="secondary">XS</Button>
-              <Button variant="secondary">S</Button>
-              <Button variant="secondary">M</Button>
-              <Button variant="secondary">L</Button>
-              <Button variant="secondary">XL</Button>
-              <Button variant="secondary">XXL</Button>
-              <Button variant="secondary">XXXL</Button>
+
+          <h1 className="text-3xl font-semibold leading-tight">
+            {product?.title}
+          </h1>
+          <p className="text-3xl font-bold">{product?.price} $</p>
+
+          <div className="space-y-1">
+            <p className="font-medium">Marime:</p>
+            <div className="flex flex-wrap gap-2">
+              {["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
+                <Button key={size} variant="secondary">
+                  {size}
+                </Button>
+              ))}
             </div>
           </div>
-          <div>
-            <p>Culoare:</p>
-            <div className="flex gap-1">
+
+          <div className="space-y-1">
+            <p className="font-medium">Culoare:</p>
+            <div className="flex gap-2">
               <Button
-                className="rounded-full w-9 bg-red-500"
+                className="rounded-full w-8 h-8 bg-red-500"
                 variant="outline"
               ></Button>
               <Button
-                className="rounded-full w-9 bg-green-300"
+                className="rounded-full w-8 h-8 bg-green-300"
                 variant="outline"
               ></Button>
               <Button
-                className="rounded-full w-9 bg-blue-500"
+                className="rounded-full w-8 h-8 bg-blue-500"
                 variant="outline"
               ></Button>
             </div>
           </div>
-          <div>
-            <p>Cantitate:</p>
-            <div className="flex items-center border w-fit rounded-xl">
+
+          <div className="space-y-1">
+            <p className="font-medium">Cantitate:</p>
+            <div className="flex items-center border rounded-xl w-fit px-1">
               <Button
                 variant="ghost"
-                onClick={() => {
-                  if (counter > 1) {
-                    setCounter(counter - 1);
-                  } else {
-                    setCounter(counter);
-                  }
-                }}
+                onClick={() => setCounter(Math.max(1, counter - 1))}
               >
                 <IconMinus />
               </Button>
-              <div className="px-2">{counter}</div>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setCounter(counter + 1);
-                }}
-              >
+              <span className="px-4">{counter}</span>
+              <Button variant="ghost" onClick={() => setCounter(counter + 1)}>
                 <IconPlus />
               </Button>
             </div>
           </div>
-          <div className="flex items-center  gap-5">
+
+          <div className="flex items-center gap-4 pt-2">
             <Button
-              className="w-75"
+              className="flex items-center gap-2 w-[200px]"
               onClick={() => {
                 addToCart(product!, counter);
                 setOpenCart(true);
@@ -119,16 +119,28 @@ const ProductDetail = () => {
               <IconShoppingCart />
               Adauga in cos
             </Button>
+
             <Button variant="outline" onClick={() => addToFavorite(product!)}>
-              {isInFavorite ? <IconHeartFilled /> : <IconHeart />}
+              {isInFavorite ? (
+                <IconHeartFilled className="text-red-500" />
+              ) : (
+                <IconHeart />
+              )}
             </Button>
           </div>
         </div>
       </div>
-      <div className="container w-full mx-auto py-[80px]">
-        <p className="text-xl mb-5">Descriere</p>
-        <p className="w-[586px]">{`${product?.description}. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum perferendis laboriosam doloremque esse ad assumenda consequatur, expedita fugiat provident nulla nostrum, nihil qui, beatae culpa! Maiores quidem natus excepturi explicabo.`}</p>
+
+      <div className="mt-14 max-w-3xl">
+        <h2 className="text-xl font-semibold mb-3">Descriere</h2>
+        <p className="text-gray-700 leading-relaxed">
+          {product?.description}. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Rerum perferendis laboriosam doloremque esse ad
+          assumenda consequatur, expedita fugiat provident nulla nostrum, nihil
+          qui, beatae culpa!
+        </p>
       </div>
+
       <CartSheet open={openCart} onOpenChange={setOpenCart} />
     </div>
   );
