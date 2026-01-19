@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useProducts from "../../hooks/useProducts";
+import { useResponsive } from "../../hooks/useResponsive";
 import { DesktopProductCard } from "./DesktopProductCard";
 import { MobileProductCard } from "./MobileProductCard";
 import ItemsFilters from "./ProductsFilters";
 import ItemsGrid from "./ProductsGrid";
-import { useResponsive } from "../../hooks/useResponsive";
 
 const ProductsDashboard: React.FC = () => {
   const { fetchProducts, loading, error, filteredProducts, categories } =
