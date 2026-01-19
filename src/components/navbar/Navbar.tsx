@@ -143,15 +143,17 @@ const Navbar: React.FC = () => {
           )}
 
           {isMobile ? (
-            <h1 className="text-lg font-bold">Store</h1>
-          ) : user ? (
-            <Button variant="ghost" onClick={signOut}>
-              Logout
-            </Button>
+            user ? (
+              <Button variant="ghost" onClick={signOut}>
+                Logout
+              </Button>
+            ) : (
+              <Button variant="ghost" onClick={() => setShowAuthModal(true)}>
+                Login
+              </Button>
+            )
           ) : (
-            <Button variant="ghost" onClick={() => setShowAuthModal(true)}>
-              Login
-            </Button>
+            <h1 className="text-lg font-bold">Store</h1>
           )}
         </div>
       </nav>
@@ -191,16 +193,19 @@ const Navbar: React.FC = () => {
               ) : null}
             </Button>
 
-            {!isMobile && (
-              <Button className="relative" variant="ghost">
-                Favorite <IconHeart />
-                {favoriteTotal ? (
-                  <div className="absolute border rounded-full bg-neutral-700 text-neutral-100 px-1.5 py-0.5 text-[8px] top-1 right-0">
-                    {favoriteTotal}
-                  </div>
-                ) : null}
-              </Button>
-            )}
+            <Button
+              onClick={() => alert("Add favoriteSheet component")}
+              className="relative"
+              variant="ghost"
+              size={isMobile ? "icon" : "default"}
+            >
+              {!isMobile && "Favorite"} <IconHeart size={isMobile ? 20 : 24} />
+              {favoriteTotal ? (
+                <div className="absolute border rounded-full bg-neutral-700 text-neutral-100 px-1.5 py-0.5 text-[8px] top-1 right-0">
+                  {favoriteTotal}
+                </div>
+              ) : null}
+            </Button>
           </div>
         </div>
       </div>
