@@ -14,6 +14,7 @@ import { useCart } from "../../hooks/useCart";
 import { useFavorite } from "../../hooks/useFavorite";
 import { CartSheet } from "../cartProducts/CartSheet";
 import { useNavigate } from "react-router";
+import { useResponsive } from "../../hooks/useResponsive";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Navbar: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const { cartTotal } = useCart();
   const { favoriteTotal } = useFavorite();
+  const { isMobile } = useResponsive();
   const handleSearchItems = () => {
     const query = searchValue.trim().toLowerCase();
 
@@ -51,13 +53,17 @@ const Navbar: React.FC = () => {
     <div className="sticky top-0 z-20 bg-white">
       <nav className=" shadow p-2">
         <div className="container mx-auto  flex justify-between items-center">
-          <h1 className="text-xl font-bold">E-Commerce Store</h1>
-          <div className="flex gap-4  items-center justify-between">
-            <Button variant="ghost">Home1</Button>
+          {isMobile ? (
+            <IconArrowsSort />
+          ) : (
+            <h1 className="text-xl font-bold">E-Commerce Store</h1>
+          )}
+          <div className="flex gap-1  items-center justify-between">
+            <Button variant="ghost">Home</Button>
             <Button onClick={handleToOrders} variant="ghost">
               Orders
             </Button>
-            <Button variant="ghost">Home3</Button>
+            <Button variant="ghost">About</Button>
           </div>
           {user ? (
             <Button variant="ghost" onClick={signOut}>
@@ -115,7 +121,6 @@ const Navbar: React.FC = () => {
           <div>
             <Button variant="ghost">Men</Button>
             <Button variant="ghost">Women</Button>
-            <Button variant="ghost">Kids</Button>
             <Button variant="ghost">Electronics</Button>
             <Button variant="ghost">Jewelery</Button>
           </div>
